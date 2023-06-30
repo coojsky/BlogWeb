@@ -1,17 +1,18 @@
 package org.example.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
 import org.example.domain.Article;
 import org.example.dto.AddArticleRequest;
 import org.example.service.BlogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller
+@RestController
 public class BlogApiController {
     @Autowired
     BlogService blogService;
@@ -27,15 +28,20 @@ public class BlogApiController {
 
     }
 
-    @GetMapping("/api/articles/find")
-    public ResponseEntity<List<Article>> findArticles() {
-        System.out.println("findArticle()In");
+    @GetMapping("/api/articles")
+    public ResponseEntity<List<Article>> findArticles(HttpServletRequest request) {
 
-        List<Article> articleList = blogService.findAll();
+        HttpSession session = request.getSession(false);
+        if(session != null)
+        {
+            Member member = (Member)session.getAttribute("member");
+            if(member != null){
+                List<Article> articleList = blogService.findAll();
+                return ResponseEntity.status(HttpStatus.OK).body(articleList);
+            }
+        }
 
-        System.out.println("findArticle() Out");
-
-        return ResponseEntity.status(HttpStatus.OK).body(articleList);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
     }
 
     @GetMapping("/api/articles/{id}")
