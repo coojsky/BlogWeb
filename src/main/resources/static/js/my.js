@@ -48,5 +48,7 @@ async function login()
     let responseJson = await response.text();
 
     console.log(responseJson);
-    let responseObj = await JSON.parse(responseJson); //자바스크립트 객체로 바꾸어주는 역할
+
+    window.close();
+
 }

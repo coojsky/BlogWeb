@@ -30,18 +30,9 @@ public class BlogApiController {
 
     @GetMapping("/api/articles")
     public ResponseEntity<List<Article>> findArticles(HttpServletRequest request) {
-
-        HttpSession session = request.getSession(false);
-        if(session != null)
-        {
-            Member member = (Member)session.getAttribute("member");
-            if(member != null){
-                List<Article> articleList = blogService.findAll();
-                return ResponseEntity.status(HttpStatus.OK).body(articleList);
-            }
-        }
-
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).build();
+        System.out.println("findArticles() 호출됨");
+        List<Article> articleList = blogService.findAll();
+        return ResponseEntity.status(HttpStatus.OK).body(articleList);
     }
 
     @GetMapping("/api/articles/{id}")
@@ -63,7 +54,7 @@ public class BlogApiController {
     }
 
     @PutMapping("/api/articles/{id}")
-    public ResponseEntity<Article> delete(@PathVariable long id, @RequestBody Article a) {
+    public ResponseEntity<Article> update(@PathVariable long id, @RequestBody Article a) {
         Article article = blogService.update(id, a);
         return ResponseEntity.status(HttpStatus.OK).body(article);
     }

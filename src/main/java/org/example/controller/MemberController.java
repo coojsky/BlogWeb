@@ -16,9 +16,10 @@ public class MemberController {
         //db연동
         if(true){
             HttpSession session = request.getSession();
-            session.setAttribute("member",member);
             Member m = new Member();
             m.setId(member.getId());
+            // DB를 통한 권한 받아오기 m.setLevel("vip");
+            session.setAttribute("member",m);
             return ResponseEntity.ok().body(m);
         }
         else {
