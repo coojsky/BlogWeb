@@ -49,14 +49,16 @@ public class BlogApiController {
         return ResponseEntity.status(HttpStatus.OK).body(article);
     }
 
-    @GetMapping("/api/article/find")
-    public ResponseEntity<Article> SearchfindArticle(@RequestParam long id){
-        System.out.println("SearchfindArticle()In id[" + id + "" + "]");
+    @DeleteMapping("/api/articles/{id}")
+    public ResponseEntity<Void> delete(@PathVariable long id) {
+        blogService.delete(id);
+        return ResponseEntity.status(HttpStatus.OK).build();
 
-        Article article = blogService.findById(id);
+    }
 
-        System.out.println("SearchfindArticle() Out");
-
+    @PutMapping("/api/articles/{id}")
+    public ResponseEntity<Article> delete(@PathVariable long id, @RequestBody Article a) {
+        Article article = blogService.update(id, a);
         return ResponseEntity.status(HttpStatus.OK).body(article);
     }
 

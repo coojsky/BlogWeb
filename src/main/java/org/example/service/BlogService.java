@@ -1,5 +1,6 @@
 package org.example.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.example.domain.Article;
 import org.example.dto.AddArticleRequest;
@@ -27,5 +28,18 @@ public class BlogService {
 
     public Article findById(long id){
         return blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+    }
+
+    public void delete(long id){
+        blogRepository.deleteById(id);
+    }
+
+    @Transactional //진행하는 동안 방해를 안받도록 설정
+    public Article update(long id, Article a){
+        Article article = blogRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("not found: " + id));
+
+        article.update(a.getTitle(), a.getContent());
+
+        return article;
     }
 }
